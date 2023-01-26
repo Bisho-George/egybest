@@ -4,6 +4,7 @@ dotenv.config()
 import express from 'express'
 import mongoose from 'mongoose'
 import { router as movieRouter } from './routers/movieRouter.js'
+
 const MONGODB_CONNECTION = process.env.MONGODB_CONNECTION;
 mongoose.set('strictQuery', false);
 mongoose.connect(MONGODB_CONNECTION);
@@ -19,6 +20,7 @@ db.once("open", () => {
 
 const app = express()
 const port = 3000
+
 app.use(express.json());
 app.use(cors());
 

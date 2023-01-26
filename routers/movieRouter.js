@@ -1,7 +1,7 @@
 import { Movie } from "../models/movie.js"
-import { Router } from "express"
+import express from "express"
 
-export const router = new Router();
+export const router = express.Router();
 
 router.get('/:id', async (req, res) => {
     try {
