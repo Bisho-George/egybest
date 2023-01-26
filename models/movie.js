@@ -2,12 +2,12 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const MovieSchema = new Schema({
-    rating: String,
+    rating: Number,
     title: String,
-    cast: [{ id: String }],
+    members: [{ id: String }],
     genre: String,
-    category: Boolean,
+    category: String,
     language: String
 });
 
-export const Movies = mongoose.model('MovieModel', MovieSchema);
+export const Movie = mongoose.model('Movie', MovieSchema);
