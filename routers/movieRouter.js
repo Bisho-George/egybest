@@ -20,19 +20,18 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        // let regex = /[a-zA-Z]/
-        if (
-            req.body.title == null
-            //  || !regex.test(req.body.title)
-        ) {
-            res.status(404).send('the movie name is not specified');
+        let regex = /^[a-zA-Z]$/
+        const movie = new Movie({
+            title: req.body.title
+        });
+        if (!regex.test(movie.title) || movie.title === null) { 
+            res.status(404).json({'message': `invalid title`})
         }
         else {
-            const movie = new Movie({
-                title: req.body.title
-            });
             await movie.save();
+            res.status(200).json('the movie is created successfully')
         }
+        
     }
     catch (error) {
         res.status(404).json({ message: `invalid id: ${error.message}` });
