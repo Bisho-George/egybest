@@ -9,12 +9,11 @@ export const router = express.Router();
 
 router.post('/rate', async (req, res) => {
     try {
-        const movie = await Movie.findOne({
-            title: req.body.title
-        })
-        await movie.updateOne({
-            rating: req.body.rating
-        })
+
+        const movie = await Movie.findById(req.body.id);
+        movie.rating.push(req.body.rating)
+        await movie.save();
+        res.status(200).json('the rating has been updated')
     }
     catch (error) {
         res.status(404).json(`${error}`);

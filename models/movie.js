@@ -11,10 +11,6 @@ const MovieSchema = new Schema({
         default: 0, 
         id: String,
     },
-    ratingCount: {
-        type: Number,
-        default: 0
-    },
     title: {
         type: String,
         required: true
