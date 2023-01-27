@@ -20,7 +20,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        let regex = /^[a-zA-Z]$/
+        let regex = /^[a-z/sA-Z]+$/
         const movie = new Movie({
             title: req.body.title
         });
