@@ -1,8 +1,27 @@
 import { Movie } from "../models/movie.js"
 import express from "express"
 import { CastMember } from "../models/castMember.js";
+import { captureRejectionSymbol } from "events";
 
 export const router = express.Router();
+
+
+router.post('/rate', async (req, res) => {
+    try {
+        const movie = await Movie.findOne({
+            title: req.body.title
+        })
+        await movie.updateOne({
+            rating: req.body.rating
+        })
+    }
+    catch (error) {
+        res.status(404).json(`${error}`);
+    }
+    
+})
+
+
 
 router.get('/:id', async (req, res) => {
     try {
@@ -32,9 +51,6 @@ router.get('/:id/watch', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-
-        // TODO: make sure genre, category, members and laguage are all valid
-
         let regex = /^[a-zA-Z\s\-]+$/;
         const movie = new Movie({
             title: req.body.title,
