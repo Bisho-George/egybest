@@ -5,7 +5,7 @@ dotenv.config()
 import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
-import {router as movieRouter} from './routers/movieRouter.js'
+import { router as movieRouter } from './routers/movieRouter.js'
 
 const MONGODB_CONNECTION = process.env.MONGODB_CONNECTION;
 
@@ -15,10 +15,10 @@ mongoose.connect(MONGODB_CONNECTION);
 const db = mongoose.connection;
 
 db.on("error", (err) => {
-  console.error(err);
+    console.error(err);
 });
 db.once("open", () => {
-  console.log("Connected to database");
+    console.log("Connected to database");
 });
 
 
