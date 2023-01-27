@@ -4,6 +4,42 @@ import { CastMember } from "../models/castMember.js";
 
 export const router = express.Router();
 
+
+
+// TODO: Rate movies
+
+
+router.get("/search", async (req, res) => {
+    try {
+        const query = [];
+
+        if (req.query.title == null && req.query.genre == null && req.query.language == null) {
+            res.status(404).json([]);
+        } else {
+
+            if (req.query.title != null) {
+                query.push({ title: { $regex: '.*' + req.query.title + '.*' } });
+            }
+
+            if (req.query.genre != null) {
+                query.push({ genre: req.query.genre });
+            }
+
+            if (req.query.language != null) {
+                query.push({ language: req.query.language })
+            }
+
+            const results = await Movie.find({
+                $and: query
+            });
+
+            res.status(200).json(results);
+        }
+
+    } catch (error) {
+        res.status(404).json("No results")
+    }
+})
 router.get('/:id', async (req, res) => {
     try {
         const movie = await Movie.findById(req.params.id);
@@ -18,7 +54,6 @@ router.get('/:id', async (req, res) => {
         res.status(404).json({ message: `invalid id: ${error.message}` });
     }
 })
-
 router.get('/:id/watch', async (req, res) => {
     try {
         const movie = await Movie.findById(req.params.id);
