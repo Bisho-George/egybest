@@ -3,12 +3,13 @@ const { Schema } = mongoose;
 
 const MovieSchema = new Schema({
     rating: {
-        type: Number,
-        default: 0.0
+        type: [String],
+        default: []
     },
     watchCount: {
         type: Number,
-        default: 0
+        default: 0, 
+        id: String,
     },
     title: {
         type: String,
