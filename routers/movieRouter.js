@@ -1,5 +1,6 @@
 import { Movie } from "../models/movie.js"
 import express from "express"
+import { CastMember } from "../models/castMember.js";
 
 export const router = express.Router();
 
@@ -18,20 +19,44 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+router.get('/:id/watch', async (req, res) => {
+    try {
+        const movie = await Movie.findById(req.params.id);
+        movie.watchCount++;
+        await movie.save();
+        res.json(movie.url);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+})
+
 router.post('/', async (req, res) => {
     try {
-        let regex = /^[a-zA-Z]$/
+        // TODO: make sure genre, category, members and laguage are all valid
+
+        let regex = /^[a-zA-Z\s\-]+$/
+
         const movie = new Movie({
-            title: req.body.title
+            title: req.body.title,
+            members: req.body.members,
+            genre: req.body.genre,
+            language: req.body.language,
+            url: req.body.url
         });
-        if (!regex.test(movie.title) || movie.title === null) { 
-            res.status(404).json({'message': `invalid title`})
+
+        if (!regex.test(movie.title) || movie.title == null) {
+            res.status(404).json({ 'message': `invalid title` })
         }
         else {
-            await movie.save();
+            const newMovie = await movie.save();
+            for (let castMemberId of req.body.members) {
+                const castMember = await CastMember.findById(castMemberId);
+                castMember.movies = [...castMember.movies, newMovie._id];
+                await castMember.save();
+            }
             res.status(200).json('the movie is created successfully')
         }
-        
+
     }
     catch (error) {
         res.status(404).json({ message: `invalid id: ${error.message}` });

@@ -11,7 +11,13 @@ const castMemberSchema = new Schema({
         type: String,
         required: true
     },
-    movies: [{ type: String }]
+    movies: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'movies'
+        }],
+        required: true
+    }
 });
 
 export const CastMember = mongoose.model('CastMember', castMemberSchema);
